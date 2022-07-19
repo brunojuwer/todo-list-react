@@ -25,6 +25,7 @@ main.content {
   width: 100%;
   padding: 1.08rem 1rem;
   border: 1.5px var(--gray-700) solid;
+  color: var(--gray-100);
   border-radius: 8px;
   background: var(--gray-500);
   font-size: 1rem;

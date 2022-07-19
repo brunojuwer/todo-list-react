@@ -3,16 +3,23 @@ import { Trash, Check } from 'phosphor-react';
 import styles from './Task.module.css';
 
 interface TaskProps {
-  id: number;
+  id: string;
   taskTitle: string;
   isComplete: boolean;
-  onCheckTask: (id: number) => void;
+  onCheckTask: (id: string) => void;
+  onDeleteTask: (id: string) => void;
+  onTasksDone: () => void;
 }
 
-export function Task({id, taskTitle, isComplete, onCheckTask} : TaskProps) {
+export function Task({id, taskTitle, isComplete, onCheckTask, onDeleteTask, onTasksDone} : TaskProps) {
 
   function handleCheckTask(){
     onCheckTask(id)
+    onTasksDone()
+  }
+
+  function handleDeleteTask(){
+    onDeleteTask(id)
   }
 
   return (
@@ -23,9 +30,6 @@ export function Task({id, taskTitle, isComplete, onCheckTask} : TaskProps) {
             className={isComplete ? styles.checkboxTaskChecked : styles.checkboxTask}
             onClick={handleCheckTask}
             >
-            <input
-              type="checkbox"
-            />
             <span className={isComplete ? styles.checkmarkChecked : styles.checkmark }><Check size={14}/></span>
           </label>
         </div>
@@ -37,6 +41,7 @@ export function Task({id, taskTitle, isComplete, onCheckTask} : TaskProps) {
         <button 
           className={styles.deleteTask}
           type='button'
+          onClick={handleDeleteTask}
         >
           <Trash size={24}/>
         </button>

@@ -1,48 +1,82 @@
 import styles from './TasksList.module.css';
 import addButton from '../assets/plus.svg'
 import { Task } from './Task';
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-const mytasks = [
-  {
-    id: 1,
-    taskTitle: 'asdopaskdpoaksd asd a sd çfgkhjfgolij adasd asd',
-    isComplete: false
-  },
-  {
-    id: 2,
-    taskTitle: 'asdafuhjlidjlf sdf kjsdf asd a sd asd  sad ad adasd asd',
-    isComplete: false
-  },
-  {
-    id: 3,
-    taskTitle: 'asdopaskdpoaksd asd   sad ad adasd asd',
-    isComplete: false
-  },
-]
+
+interface Tasks {
+  id: string;
+  taskTitle: string;
+  isComplete: boolean;
+}
 
 export function TasksList() {
 
-  const [tasks, setTasks] = useState(mytasks);
+  const [tasks, setTasks] = useState<Tasks[]>([]);
+  const [taskName, setTaskName] = useState('');
+  const [tasksCompleted, setTasksCompleted] = useState(0);
 
-  function handleTaskCompleted(id: number) {
+
+  function handleCreateNewTask(e: FormEvent) {
+    e.preventDefault()
+    if (taskName){
+      const newTask = {
+        id: uuidv4(),
+        taskTitle: taskName,
+        isComplete: false
+      }
+      setTasks([...tasks, newTask])
+      setTaskName('')
+    }
+  }
+
+  function handleOnChangeInput(e: ChangeEvent<HTMLInputElement>) {
+    setTaskName(e.target.value)
+  }
+
+  function handleTaskCompleted(id: string) {
     const checkedTask = tasks.map(task => task.id === id ?
       {...task, isComplete: !task.isComplete } : task
     )
-      console.log(checkedTask)
     setTasks(checkedTask)
   }
+
+  function handleDeleteTask(id: string) {
+    const deletedTask = tasks.filter(task => task.id !== id)
+    setTasks(deletedTask)
+  }
+
+  function verifyTasksDone() {
+    const tasksDone = tasks.reduce((acc, {isComplete}) => {
+      return isComplete ? acc + 1 : acc
+    }, 0)
+    
+    setTasksCompleted(tasksDone)
+  }
+
 
   return (
   <div className={styles.container}>
     <main className={styles.content}>
-      <form className={styles.createTaskField}>
+      <form 
+        className={styles.createTaskField}
+        onSubmit={handleCreateNewTask}
+      >
         <input 
           type="text" 
           placeholder='Adicione uma nova tarefa'
-
+          name='taskName'
+          onChange={handleOnChangeInput}
+          value={taskName}
         />
-        <button type='submit'>Criar <img src={addButton} alt="Adicionar tarefa" /></button>
+
+        <button 
+          type='submit'>Criar 
+          <img src={addButton} 
+          alt="Adicionar tarefa" 
+        />
+        </button>
       </form>
 
       <div className={styles.tasksInfo}>
@@ -53,7 +87,11 @@ export function TasksList() {
         
         <div className={styles.doneTasks}>
           <span className={styles.doneTasksTitle}>Concluídas</span>
-          <span className={styles.doneTasksAmount}>2 de 5</span>
+          <span 
+            className={styles.doneTasksAmount}
+          >
+            {tasksCompleted} de {tasks.length}
+          </span>
         </div>
       </div>
 
@@ -65,6 +103,8 @@ export function TasksList() {
               taskTitle={taskTitle}
               isComplete={isComplete}
               onCheckTask={handleTaskCompleted}
+              onDeleteTask={handleDeleteTask}
+              onTasksDone={verifyTasksDone}
             />
           </ul>
         ))}
