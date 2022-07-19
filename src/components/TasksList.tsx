@@ -1,8 +1,37 @@
 import styles from './TasksList.module.css';
 import addButton from '../assets/plus.svg'
 import { Task } from './Task';
+import { useState } from 'react';
+
+const mytasks = [
+  {
+    id: 1,
+    taskTitle: 'asdopaskdpoaksd asd a sd çfgkhjfgolij adasd asd',
+    isComplete: false
+  },
+  {
+    id: 2,
+    taskTitle: 'asdafuhjlidjlf sdf kjsdf asd a sd asd  sad ad adasd asd',
+    isComplete: false
+  },
+  {
+    id: 3,
+    taskTitle: 'asdopaskdpoaksd asd   sad ad adasd asd',
+    isComplete: false
+  },
+]
 
 export function TasksList() {
+
+  const [tasks, setTasks] = useState(mytasks);
+
+  function handleTaskCompleted(id: number) {
+    const checkedTask = tasks.map(task => task.id === id ?
+      {...task, isComplete: !task.isComplete } : task
+    )
+      console.log(checkedTask)
+    setTasks(checkedTask)
+  }
 
   return (
   <div className={styles.container}>
@@ -19,7 +48,7 @@ export function TasksList() {
       <div className={styles.tasksInfo}>
         <div className={styles.createdTasks}>
           <span className={styles.createdTasksTitle}>Tarefas criadas</span>
-          <span className={styles.createdTasksAmount}>5</span>
+          <span className={styles.createdTasksAmount}>{tasks.length}</span>
         </div>
         
         <div className={styles.doneTasks}>
@@ -29,8 +58,17 @@ export function TasksList() {
       </div>
 
       <section>
-        <Task />
-        <Task />
+        {tasks.map(({id, taskTitle, isComplete})=> (
+          <ul key={id}>
+            <Task
+              id={id}
+              taskTitle={taskTitle}
+              isComplete={isComplete}
+              onCheckTask={handleTaskCompleted}
+            />
+          </ul>
+        ))}
+        
       </section>
     </main>
   </div>

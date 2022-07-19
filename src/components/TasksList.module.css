@@ -112,3 +112,8 @@ div.doneTasks .doneTasksAmount {
 section {
   width: 100%;
 }
+
+section ul {
+    width: 100%;
+    list-style: none;
+}

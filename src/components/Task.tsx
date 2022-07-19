@@ -2,31 +2,44 @@ import { Trash, Check } from 'phosphor-react';
 
 import styles from './Task.module.css';
 
-export function Task() {
-  return (
+interface TaskProps {
+  id: number;
+  taskTitle: string;
+  isComplete: boolean;
+  onCheckTask: (id: number) => void;
+}
 
-    <ul>
-      <li key={'d'}>
+export function Task({id, taskTitle, isComplete, onCheckTask} : TaskProps) {
+
+  function handleCheckTask(){
+    onCheckTask(id)
+  }
+
+  return (
+    
+      <li>
         <div className={styles.checkboxContainer}>
-          <label className={styles.checkboxTask}>
+          <label 
+            className={isComplete ? styles.checkboxTaskChecked : styles.checkboxTask}
+            onClick={handleCheckTask}
+            >
             <input
               type="checkbox"
             />
-            <span className={styles.checkmark}><Check/></span>
+            <span className={isComplete ? styles.checkmarkChecked : styles.checkmark }><Check size={14}/></span>
           </label>
         </div>
 
-        <div className={styles.taskTitle}>
-          <p>Fazer comidaas dasdasda asdasdasda  asdasdasdasdadasdasdasdasd sdasdasasdasdas asdasds</p>
+        <div className={isComplete ? styles.taskTitleChecked : styles.taskTitle }>
+          <p>{taskTitle}</p>
         </div>
 
         <button 
           className={styles.deleteTask}
           type='button'
         >
-          <Trash size={22}/>
+          <Trash size={24}/>
         </button>
       </li>
-    </ul>
   )
 }
