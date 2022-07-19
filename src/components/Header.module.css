@@ -1,0 +1,13 @@
+.header {
+  width: 100%;
+  padding-top: 2rem;
+  background: var(--gray-700);
+}
+
+.header div {
+  max-width: 1440px;
+  width: 100%;
+  text-align: center;
+  padding: 2rem 2rem 6rem;
+  margin: 0 auto;
+}

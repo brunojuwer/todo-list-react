@@ -1,0 +1,61 @@
+ul {
+  width: 100%;
+  list-style: none;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: var(--gray-500);
+  border: 1px solid var(--gray-400);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 1rem 1rem;
+}
+
+.checkboxContainer {
+  width: 2rem;
+  height: 2rem;
+  padding-left: 0.5rem;
+}
+
+.checkboxTask {
+  display: block;
+  margin-top: 3px;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 2px solid var(--blue);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.checkboxTask input {
+  display: none;
+}
+
+.taskTitle {
+  padding-left: 1rem;
+}
+
+.taskTitle p {
+  color: var(--gray-100);
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+button.deleteTask {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+button.deleteTask svg {
+  color: var(--gray-300);
+  transition: 200ms color;
+}
+
+button.deleteTask svg:hover {
+  color: var(--red-danger);
+}
