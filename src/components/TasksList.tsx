@@ -15,14 +15,30 @@ interface Tasks {
   isComplete: boolean;
 }
 
+
 export function TasksList() {
+
+  const isLocalStorageNull = localStorage.getItem('todo-local-storage')
+  
+  if(!isLocalStorageNull) {
+    localStorage.setItem('todo-local-storage', '[]');
+  }
 
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [taskName, setTaskName] = useState('');
   const [tasksCompleted, setTasksCompleted] = useState(0);
+
   const isInputEmpty = taskName.trim().length === 0;
 
-  useEffect(()=>{
+
+  useEffect(() => {
+    const JSONlocalStorage = localStorage.getItem('todo-local-storage');  
+    const convertedJSON = JSON.parse(JSONlocalStorage!)
+    setTasks(convertedJSON)
+  }, [])
+  
+
+  useEffect(() => {
     const tasksDone = tasks.reduce((acc, {isComplete}) => {
       return isComplete ? acc + 1 : acc
     }, 0)
@@ -41,6 +57,7 @@ export function TasksList() {
       }
       setTasks([newTask, ...tasks])
       setTaskName('')
+      localStorage.setItem('todo-local-storage', JSON.stringify([newTask, ...tasks]))
     }
   }
 
@@ -53,11 +70,14 @@ export function TasksList() {
       {...task, isComplete: !task.isComplete } : task
     )
     setTasks(checkedTask)
+    localStorage.setItem('todo-local-storage', JSON.stringify(checkedTask))
+
   }
 
   function handleDeleteTask(id: string) {
     const deletedTask = tasks.filter(task => task.id !== id)
     setTasks(deletedTask)
+    localStorage.setItem('todo-local-storage', JSON.stringify(deletedTask))
   }
 
   return (
