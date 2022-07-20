@@ -1,8 +1,12 @@
-import styles from './TasksList.module.css';
-import addButton from '../assets/plus.svg'
-import { Task } from './Task';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+
+import styles from './TasksList.module.css';
+
+import { Task } from './Task';
+
+import empty from '../assets/emptyList.svg';
+import addButton from '../assets/plus.svg';
 
 
 interface Tasks {
@@ -16,17 +20,26 @@ export function TasksList() {
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [taskName, setTaskName] = useState('');
   const [tasksCompleted, setTasksCompleted] = useState(0);
+  const isInputEmpty = taskName.trim().length === 0;
 
+  useEffect(()=>{
+    const tasksDone = tasks.reduce((acc, {isComplete}) => {
+      return isComplete ? acc + 1 : acc
+    }, 0)
+
+    setTasksCompleted(tasksDone)
+  }, [tasks])
 
   function handleCreateNewTask(e: FormEvent) {
     e.preventDefault()
-    if (taskName){
+
+    if (!isInputEmpty){
       const newTask = {
         id: uuidv4(),
         taskTitle: taskName,
         isComplete: false
       }
-      setTasks([...tasks, newTask])
+      setTasks([newTask, ...tasks])
       setTaskName('')
     }
   }
@@ -46,15 +59,6 @@ export function TasksList() {
     const deletedTask = tasks.filter(task => task.id !== id)
     setTasks(deletedTask)
   }
-
-  function verifyTasksDone() {
-    const tasksDone = tasks.reduce((acc, {isComplete}) => {
-      return isComplete ? acc + 1 : acc
-    }, 0)
-    
-    setTasksCompleted(tasksDone)
-  }
-
 
   return (
   <div className={styles.container}>
@@ -95,21 +99,29 @@ export function TasksList() {
         </div>
       </div>
 
-      <section>
-        {tasks.map(({id, taskTitle, isComplete})=> (
-          <ul key={id}>
-            <Task
-              id={id}
-              taskTitle={taskTitle}
-              isComplete={isComplete}
-              onCheckTask={handleTaskCompleted}
-              onDeleteTask={handleDeleteTask}
-              onTasksDone={verifyTasksDone}
-            />
-          </ul>
-        ))}
-        
-      </section>
+
+      {
+        tasks.length ?
+        <section>
+         {tasks.map(({id, taskTitle, isComplete})=> (
+           <ul key={id}>
+              <Task
+                id={id}
+                taskTitle={taskTitle}
+                isComplete={isComplete}
+                onCheckTask={handleTaskCompleted}
+                onDeleteTask={handleDeleteTask}
+           />
+           </ul>
+          ))}
+        </section> 
+            : 
+        <section className={styles.tasksEmpty}>
+          <img src={empty} alt="todo vazio"/>
+          <strong>Você ainda não tem tarefas cadastradas</strong>
+          <p>Crie tarefas e organize seus itens a fazer</p>
+        </section>
+      }
     </main>
   </div>
   )

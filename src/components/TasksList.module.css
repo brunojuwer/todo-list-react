@@ -110,6 +110,34 @@ div.doneTasks .doneTasksAmount {
   border-radius: 16px;
 }
 
+.tasksEmpty {
+  max-height: 400px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid var(--gray-400);
+  border-radius: 8px;
+}
+
+.tasksEmpty img {
+  margin-top: 3.5rem;
+}
+
+.tasksEmpty strong {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: var(--gray-300);
+  line-height: 0.5;
+}
+
+.tasksEmpty p {
+  margin-top: 1rem;
+  color: var(--gray-300);
+}
+
 section {
   width: 100%;
 }
@@ -117,4 +145,35 @@ section {
 section ul {
     width: 100%;
     list-style: none;
+}
+
+@media(max-width: 765px) {
+  main.content {
+    padding: 0 1rem;
+  }
+}
+
+@media(max-width: 315px) {
+  .createdTasks {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .createdTasksTitle {
+    margin-bottom: 5px;
+  }
+
+  .doneTasks {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .doneTasksTitle {
+    margin-bottom: 5px;
+  }
+
+
 }

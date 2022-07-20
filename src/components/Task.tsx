@@ -8,14 +8,12 @@ interface TaskProps {
   isComplete: boolean;
   onCheckTask: (id: string) => void;
   onDeleteTask: (id: string) => void;
-  onTasksDone: () => void;
 }
 
-export function Task({id, taskTitle, isComplete, onCheckTask, onDeleteTask, onTasksDone} : TaskProps) {
+export function Task({id, taskTitle, isComplete, onCheckTask, onDeleteTask} : TaskProps) {
 
   function handleCheckTask(){
     onCheckTask(id)
-    onTasksDone()
   }
 
   function handleDeleteTask(){
