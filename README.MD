@@ -2,7 +2,7 @@
 
 ## Projeto referente ao primeiro desafio do IGNITE da [@Rocketseat](https://www.rocketseat.com.br/)
 
-### Técnologias utilizadas
+### Tecnologias utilizadas
 
 - Vite 
 - React
