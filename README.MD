@@ -7,7 +7,7 @@
 - Vite 
 - React
 - TypeScript
-- CSS
+- CSS modules
 
 ### Caso queira testar pode acessar o link = [TODO-APP](https://todo-app.juwer.com.br/) 
 
