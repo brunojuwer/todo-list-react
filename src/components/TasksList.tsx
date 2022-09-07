@@ -10,9 +10,9 @@ import addButton from '../assets/plus.svg';
 
 
 interface Tasks {
-  id: string;
-  taskTitle: string;
-  isComplete: boolean;
+  id: number;
+  taskName: string;
+  taskComplete: boolean;
 }
 
 
@@ -29,18 +29,19 @@ export function TasksList() {
   const [tasksCompleted, setTasksCompleted] = useState(0);
 
   const isInputEmpty = taskName.trim().length === 0;
-
+  const url = 'http://localhost:8800/'
 
   useEffect(() => {
-    const JSONlocalStorage = localStorage.getItem('todo-local-storage');  
-    const convertedJSON = JSON.parse(JSONlocalStorage!)
-    setTasks(convertedJSON)
+    fetch(`${url}tasks`)
+      .then(response => response.json())
+      .then(values => setTasks(values))
+      .catch(console.log)
   }, [])
   
 
   useEffect(() => {
-    const tasksDone = tasks.reduce((acc, {isComplete}) => {
-      return isComplete ? acc + 1 : acc
+    const tasksDone = tasks.reduce((acc, {taskComplete}) => {
+      return taskComplete ? acc + 1 : acc
     }, 0)
 
     setTasksCompleted(tasksDone)
@@ -50,14 +51,17 @@ export function TasksList() {
     e.preventDefault()
 
     if (!isInputEmpty){
-      const newTask = {
-        id: uuidv4(),
-        taskTitle: taskName,
-        isComplete: false
+    
+      const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({taskName})
       }
-      setTasks([newTask, ...tasks])
+
+      fetch(`${url}save`, requestOptions)
+        .then(response => response.json())
+        .then(console.log)
       setTaskName('')
-      localStorage.setItem('todo-local-storage', JSON.stringify([newTask, ...tasks]))
     }
   }
 
@@ -65,16 +69,16 @@ export function TasksList() {
     setTaskName(e.target.value)
   }
 
-  function handleTaskCompleted(id: string) {
+  function handleTaskCompleted(id: number) {
     const checkedTask = tasks.map(task => task.id === id ?
-      {...task, isComplete: !task.isComplete } : task
+      {...task, taskComplete: !task.taskComplete } : task
     )
     setTasks(checkedTask)
     localStorage.setItem('todo-local-storage', JSON.stringify(checkedTask))
 
   }
 
-  function handleDeleteTask(id: string) {
+  function handleDeleteTask(id: number) {
     const deletedTask = tasks.filter(task => task.id !== id)
     setTasks(deletedTask)
     localStorage.setItem('todo-local-storage', JSON.stringify(deletedTask))
@@ -123,12 +127,12 @@ export function TasksList() {
       {
         tasks.length ?
         <section>
-         {tasks.map(({id, taskTitle, isComplete})=> (
+         {tasks.map(({id, taskName, taskComplete})=> (
            <ul key={id}>
               <Task
                 id={id}
-                taskTitle={taskTitle}
-                isComplete={isComplete}
+                taskName={taskName}
+                taskComplete={taskComplete}
                 onCheckTask={handleTaskCompleted}
                 onDeleteTask={handleDeleteTask}
            />
