@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import styles from './TasksList.module.css';
 
@@ -27,6 +26,7 @@ export function TasksList() {
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [taskName, setTaskName] = useState('');
   const [tasksCompleted, setTasksCompleted] = useState(0);
+  let tasksToShow = tasks
 
   const isInputEmpty = taskName.trim().length === 0;
   const url = 'http://localhost:8800/'
@@ -36,7 +36,7 @@ export function TasksList() {
       .then(response => response.json())
       .then(values => setTasks(values))
       .catch(console.log)
-  }, [])
+  }, [tasksToShow])
   
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export function TasksList() {
 
       fetch(`${url}save`, requestOptions)
         .then(response => response.json())
-        .then(console.log)
+        .catch(console.log)
       setTaskName('')
     }
   }
@@ -70,18 +70,28 @@ export function TasksList() {
   }
 
   function handleTaskCompleted(id: number) {
-    const checkedTask = tasks.map(task => task.id === id ?
-      {...task, taskComplete: !task.taskComplete } : task
-    )
-    setTasks(checkedTask)
-    localStorage.setItem('todo-local-storage', JSON.stringify(checkedTask))
+    
+    const requestOptions = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({
+        'idTask': id.toString()
+      })
+    }
 
+    fetch(`${url}update`, requestOptions)
   }
 
   function handleDeleteTask(id: number) {
-    const deletedTask = tasks.filter(task => task.id !== id)
-    setTasks(deletedTask)
-    localStorage.setItem('todo-local-storage', JSON.stringify(deletedTask))
+    const requestOptions = {
+      method: 'DELETE',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({
+        'idTask': id.toString()
+      })
+    }
+
+    fetch(`${url}delete`, requestOptions)
   }
 
   return (
