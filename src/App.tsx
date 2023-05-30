@@ -1,14 +1,14 @@
-import { Header } from './components/Header';
-
+import { BrowserRouter } from 'react-router-dom';
 import styles from './App.module.css';
-import { TasksList } from './components/TasksList';
+import { Router } from './Router';
 
 function App() {
   return (
-    <div className={styles.container}>
-      <Header />
-      <TasksList />
-    </div>
+    <BrowserRouter>
+      <div className={styles.container}>
+        <Router />
+      </div>
+    </BrowserRouter>
   )
 }
 

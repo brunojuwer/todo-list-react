@@ -4,13 +4,13 @@ import styles from './Task.module.css';
 
 interface TaskProps {
   id: number;
-  taskName: string;
+  todoName: string;
   taskComplete: boolean;
   onCheckTask: (id: number) => void;
   onDeleteTask: (id: number) => void;
 }
 
-export function Task({id, taskName, taskComplete, onCheckTask, onDeleteTask} : TaskProps) {
+export function Task({id, todoName, taskComplete, onCheckTask, onDeleteTask} : TaskProps) {
 
   function handleCheckTask(){
     onCheckTask(id)
@@ -33,7 +33,7 @@ export function Task({id, taskName, taskComplete, onCheckTask, onDeleteTask} : T
         </div>
 
         <div className={taskComplete ? styles.taskTitleChecked : styles.taskTitle }>
-          <p>{taskName}</p>
+          <p>{todoName}</p>
         </div>
 
         <button 
