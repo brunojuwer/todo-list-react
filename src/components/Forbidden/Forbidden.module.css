@@ -1,0 +1,10 @@
+.forbiddenMain {
+  width: 100vw;
+  text-align: center;
+}
+
+.forbiddenMain h2 {
+  color: var(--gray-300);
+  font-size: 3rem;
+  margin-top: 4rem;
+}

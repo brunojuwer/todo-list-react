@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from 'react';
 
 import styles from './TasksList.module.css';
 
@@ -7,6 +7,8 @@ import { Task } from '../Task/Task';
 import empty from '../../assets/emptyList.svg';
 import addButton from '../../assets/plus.svg';
 import { Header } from '../Header/Header';
+import { AuthContext } from '../../contexts/AuthContext';
+import { Forbidden } from '../Forbidden/Forbidden';
 
 
 interface Tasks {
@@ -23,6 +25,8 @@ export function TasksList() {
   if(!isLocalStorageNull) {
     localStorage.setItem('todo-local-storage', '[]');
   }
+
+  const {isAuthenticated} = useContext(AuthContext)
 
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [todoName, setTodoName] = useState('');
@@ -95,7 +99,7 @@ export function TasksList() {
     fetch(`${url}todos`, requestOptions)
   }
 
-  return (
+  return isAuthenticated ? (
     <>
       <Header />
       <div className={styles.container}>
@@ -162,5 +166,5 @@ export function TasksList() {
         </main>
       </div>
   </>
-  )
+  ) : (<Forbidden />)
 }
