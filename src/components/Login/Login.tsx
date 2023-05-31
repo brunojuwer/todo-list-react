@@ -3,6 +3,7 @@ import logo from '../../assets/logo.svg'
 import { FormEvent, useContext, useState } from 'react'
 import { AuthContext } from '../../contexts/AuthContext';
 import bcrypt from 'bcryptjs'
+import { NavLink } from 'react-router-dom';
 
 
 export function Login() {
@@ -49,6 +50,10 @@ export function Login() {
             className={styles.loginButton} 
             type="submit"
           >Login</button>
+        <section className={styles.createAccountContainer}>
+          <span>Or</span>
+          <p>Don't have an account? <NavLink to="/createAccount">Sign up</NavLink></p>
+        </section>
       </form>
     </main>
   )

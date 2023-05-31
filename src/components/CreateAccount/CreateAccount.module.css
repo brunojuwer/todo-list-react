@@ -1,10 +1,20 @@
-.mainContainer {
+
+.createAccountContainer {
   width: 100vw;
   height: 100vh;
 
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.createAccountForm {
+  max-width: 22rem;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
 }
 
 .logo {
@@ -14,12 +24,11 @@
   margin-bottom: 1rem;
 }
 
-.formContainer {
-  max-width: 22rem;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.createAccountTitle {
+  text-align: center;
+  color: var(--gray-300);
+  padding: 1rem;
+  font-size: 1rem;
 }
 
 .inputContainer {
@@ -41,7 +50,8 @@
   color: var(--gray-100);
 }
 
-.loginButton {
+.createAccountButton {
+  margin-top: 1rem;
   border-radius: 3px;
   border: none;
   background: var(--blue-dark);
@@ -55,37 +65,7 @@
   transition: 200ms background-color;
 }
 
-.loginButton:hover {
+.createAccountButton:hover {
   background: var(--blue);
 }
 
-.createAccountContainer {
-  margin-top: 1rem;
-  text-align: center;
-  border-top: 1px solid var(--gray-300);
-  position: relative;
-}
-
-.createAccountContainer span {
- color: var(--gray-300); 
- background: var(--gray-600);
- position: absolute;
- top: -8px;
- right: 38%;
- padding: 0 32px;
-}
-
-
-.createAccountContainer p {
-  margin-top: 2rem;
-  color: var(--gray-300);
-}
-
-.createAccountContainer p a {
-  color: var(--purple-dark);
-  text-decoration: none;
-}
-
-.createAccountContainer p a:hover {
-  opacity: 0.7;
-}
